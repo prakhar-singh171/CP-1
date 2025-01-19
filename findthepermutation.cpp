@@ -92,52 +92,35 @@ long long fpow(long long base, long long exp) {
 
 
 void solve(){
-
-    int n;
-    cin>>n;
- debug(n);
-    map<int,int> cnt;
-    debug(n);
-        rep(i,0,n-1){
-            int x; cin>>x;
-            cnt[x]++;
+    int n; cin>>n;
+    vector<string> st(n);
+    for(auto &i:st) cin>>i;
+        vector<vector<int>> adj(n+2);
+    debug(st);
+    map<int,int> ind;
+    rep(i,0,n){
+        rep(j,0,n){
+            if(st[i][j]=='1' && j>i) {adj[j].push_back(i);  ind[i]++;}
         }
-        debug(cnt);
-        cnt[0]=1;
-        int ans=n;
-        vector<int> v;
-        for(auto i:cnt) v.push_back(i.second);
-        int start=0;
-    debug(v);
-    sort(v.rbegin(),v.rend());
-        int end=n;
-        while(start<=end){
-            int mid=(start+end)/2;
-            debug( mid);
-            bool ok=1;
-            int ti=1;
-            int ex=0;
-            for(auto &i:v){
-                if(ti+i-1>mid){
-                    ex+=ti+i-1-mid;
+    }
 
-                }
-                ti++;
-                  if(mid==4) debug(ti);
-            }
-            ti--;
-            if(mid==4) debug(ti);
-        ti+=ex;
-        if(ti>mid) ok=0;
+debug(adj);
 
-            if(ok){
-                ans=mid;
-                end=mid-1;
-            }
-            else start=mid+1;
+    queue<int> q;
+    rep(i,0,n){
+        if(ind[i]==0) q.push(i);
+    }
+
+    vector<int> ans;
+    while(!q.empty()){
+        auto it=q.front(); q.pop();
+        ans.push_back(it);
+        for(auto j:adj[it]){
+            ind[j]--;
+            if(ind[j]==0) q.push(j);
         }
-        cout<<ans<<endl;
-
+    }
+    print(ans); cout<<endl;
  
 }
 

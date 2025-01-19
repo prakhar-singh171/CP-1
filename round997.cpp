@@ -93,50 +93,44 @@ long long fpow(long long base, long long exp) {
 
 void solve(){
 
-    int n;
-    cin>>n;
- debug(n);
-    map<int,int> cnt;
-    debug(n);
-        rep(i,0,n-1){
-            int x; cin>>x;
-            cnt[x]++;
-        }
-        debug(cnt);
-        cnt[0]=1;
-        int ans=n;
-        vector<int> v;
-        for(auto i:cnt) v.push_back(i.second);
-        int start=0;
-    debug(v);
-    sort(v.rbegin(),v.rend());
-        int end=n;
-        while(start<=end){
-            int mid=(start+end)/2;
-            debug( mid);
-            bool ok=1;
-            int ti=1;
-            int ex=0;
-            for(auto &i:v){
-                if(ti+i-1>mid){
-                    ex+=ti+i-1-mid;
+  vi ans1={15,8,8,8,15,5,8,1,15,5,8,15,15,15,8};
+  int n; cin>>n;
+  if(n>=15){
+        vi tt=ans1;
+        int i=1;
+        while(tt.size()!=n){
+            if(i!=15 && i!=1 && i!=8 && i!=5) tt.push_back(i);
+            i++;
 
-                }
-                ti++;
-                  if(mid==4) debug(ti);
-            }
-            ti--;
-            if(mid==4) debug(ti);
-        ti+=ex;
-        if(ti>mid) ok=0;
-
-            if(ok){
-                ans=mid;
-                end=mid-1;
-            }
-            else start=mid+1;
         }
-        cout<<ans<<endl;
+        print(tt); cout<<endl;
+        rr;
+  }
+
+  vi ans2={7,3,3,7,5,3,7,7,3};
+  if(n>=9){
+    vi tt=ans2;
+
+ int i=1;
+        while(tt.size()!=n){
+            if(i!=7 && i!=3 && i!=5) tt.push_back(i);
+            i++;
+
+        }
+        print(tt); cout<<endl;
+        rr;
+  }
+
+  if(n==6){
+    cout<<"1 1 2 3 1 2"<<endl; rr;
+  }
+  if(n==7 ){
+    cout<<"1 1 2 3 1 2 2"<<endl; rr;
+  }
+  if(n==8 ){
+    cout<<"1 1 2 3 1 2 2 8"<<endl; rr;
+  }
+
 
  
 }

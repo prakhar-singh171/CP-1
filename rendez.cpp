@@ -107,36 +107,7 @@ void solve(){
         int ans=n;
         vector<int> v;
         for(auto i:cnt) v.push_back(i.second);
-        int start=0;
-    debug(v);
-    sort(v.rbegin(),v.rend());
-        int end=n;
-        while(start<=end){
-            int mid=(start+end)/2;
-            debug( mid);
-            bool ok=1;
-            int ti=1;
-            int ex=0;
-            for(auto &i:v){
-                if(ti+i-1>mid){
-                    ex+=ti+i-1-mid;
-
-                }
-                ti++;
-                  if(mid==4) debug(ti);
-            }
-            ti--;
-            if(mid==4) debug(ti);
-        ti+=ex;
-        if(ti>mid) ok=0;
-
-            if(ok){
-                ans=mid;
-                end=mid-1;
-            }
-            else start=mid+1;
-        }
-        cout<<ans<<endl;
+        int
 
  
 }

@@ -88,57 +88,36 @@ long long fpow(long long base, long long exp) {
 #define double long double
 #define ss second
 
+int f(int i,int cond,vector<int> &v,vector<vector<int>> &dp,map<int,vector<int>> &idx){
+        if(i==v.size()) return 0;
+        if(dp[i][cond]!=-1) return dp[i][cond];
+        int x1=cond+f(i+1,1,v,dp,idx);
+        int x2=1e9;
+        auto it=upper_bound(all(idx[v[i]]),i)-idx[v[i]].begin();
+        if(it!=idx[v[i]].size()){
+            x2=f(idx[v[i]][it],0,v,dp,idx);
+        }
 
+        return dp[i][cond]=min(x1,x2);
+}
 
 
 void solve(){
 
-    int n;
-    cin>>n;
- debug(n);
-    map<int,int> cnt;
-    debug(n);
-        rep(i,0,n-1){
-            int x; cin>>x;
-            cnt[x]++;
+   
+        int n; cin>>n;
+        vi v(n);
+        for(auto &i:v) cin>>i;
+            map<int,vector<int>> idx;
+        vector<vector<int>> dp(n+2,vector<int>(3,-1));
+        rep(i,0,n){
+            idx[v[i]].push_back(i);
+           // cout<<f(0,0)<<endl;
         }
-        debug(cnt);
-        cnt[0]=1;
-        int ans=n;
-        vector<int> v;
-        for(auto i:cnt) v.push_back(i.second);
-        int start=0;
-    debug(v);
-    sort(v.rbegin(),v.rend());
-        int end=n;
-        while(start<=end){
-            int mid=(start+end)/2;
-            debug( mid);
-            bool ok=1;
-            int ti=1;
-            int ex=0;
-            for(auto &i:v){
-                if(ti+i-1>mid){
-                    ex+=ti+i-1-mid;
+        f(0,1,v,dp,idx);
+        cout<<n-dp[0][1]<<endl;
 
-                }
-                ti++;
-                  if(mid==4) debug(ti);
-            }
-            ti--;
-            if(mid==4) debug(ti);
-        ti+=ex;
-        if(ti>mid) ok=0;
 
-            if(ok){
-                ans=mid;
-                end=mid-1;
-            }
-            else start=mid+1;
-        }
-        cout<<ans<<endl;
-
- 
 }
 
 int32_t main() {
@@ -151,11 +130,7 @@ int32_t main() {
         freopen("input2.txt", "w", stdout);
         freopen("error1.txt", "w", stderr);
     #endif
-   
 
-    int test = 1;
-    cin >> test;
-    rep(i, 1, test + 1) solve();
-
-    return 0;
+        int test; cin>>test;
+        while(test--) solve();
 }

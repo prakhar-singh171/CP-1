@@ -93,51 +93,54 @@ long long fpow(long long base, long long exp) {
 
 void solve(){
 
-    int n;
-    cin>>n;
- debug(n);
-    map<int,int> cnt;
-    debug(n);
-        rep(i,0,n-1){
-            int x; cin>>x;
-            cnt[x]++;
-        }
-        debug(cnt);
-        cnt[0]=1;
-        int ans=n;
-        vector<int> v;
-        for(auto i:cnt) v.push_back(i.second);
-        int start=0;
+   
+    int n,m; cin>>n>>m;
+    vector<int> v(n);
+    for(auto &i:v) cin>>i;
+        reverse(all(v));
+    while(!v.empty() && v.back()!=0) v.pop_back();
+    reverse(all(v));
+    int tot=0;
+    n=v.size();
+    int i=0;
     debug(v);
-    sort(v.rbegin(),v.rend());
-        int end=n;
-        while(start<=end){
-            int mid=(start+end)/2;
-            debug( mid);
-            bool ok=1;
-            int ti=1;
-            int ex=0;
-            for(auto &i:v){
-                if(ti+i-1>mid){
-                    ex+=ti+i-1-mid;
+    vector<vector<int>> dp(m+1,vector<int>(m+1,-1));
+    while(i<n){
 
-                }
-                ti++;
-                  if(mid==4) debug(ti);
+        if(v[i]==0){
+            vector<int> v2,v1;
+            int j=i+1;
+            tot++;
+            while(j<n && v[j]!=0){
+                if(v[j]>0) v1.push_back(v[j]);
+                else v2.push_back(-v[j]);
+                j++;
             }
-            ti--;
-            if(mid==4) debug(ti);
-        ti+=ex;
-        if(ti>mid) ok=0;
-
-            if(ok){
-                ans=mid;
-                end=mid-1;
+            dp[0][0]=0;
+            debug(v1); debug(v2);
+            sort(all(v1)); sort(all(v2));
+            for(int i=0;i<=tot;i++){
+                auto it=lower_bound(all(v1),i+1)-v1.begin();
+                int x1=it;
+                auto it1=lower_bound(all(v2),tot+1-i)-v2.begin();
+                int x2=it1;
+                dp[tot][i]=x1+x2;
             }
-            else start=mid+1;
+            i=j;
+            debug(i);
         }
-        cout<<ans<<endl;
+    }
 
+    debug(dp);
+
+    for(int i=tot-1;i>=1;i--){
+        for(int j=0;j<=i;j++){
+            int x1=dp[i][j];
+            dp[i][j]=max(dp[i][j],x1+dp[i+1][j]);
+            dp[i][j]=max(dp[i][j],x1+dp[i+1][j+1]);
+        }
+    }
+    cout<<max(dp[1][0],dp[1][1])<<endl;
  
 }
 
@@ -154,7 +157,7 @@ int32_t main() {
    
 
     int test = 1;
-    cin >> test;
+  //  cin >> test;
     rep(i, 1, test + 1) solve();
 
     return 0;
