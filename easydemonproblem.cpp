@@ -72,30 +72,43 @@ void fast() {
  
 
 
-int f(int i, long long power, int x2, int x3, const vector<int> &v) {
-    if (i == v.size()) 
-        return 0;
 
-    
-    if (v[i] < power) {
-        return 1 + f(i + 1, power + v[i] / 2, x2, x3, v);
-    }
-
-   
-    int t1 = x2 > 0 ? f(i, power * 2, x2 - 1, x3, v) : 0;
-    int t2 = x3 > 0 ? f(i, power * 3, x2, x3 - 1, v) : 0;
-    return max(t1, t2);
-}
 
 void solve() {
-    int N, K;
-    cin >> N >> K;
+    int n, m;
+    cin >> n >> m;
+    int q;
+    cin >> q;
 
-    vector<int> v(N);
+    vector<int> v(n), v1(m);
     for (auto &i : v) cin >> i;
-    sort(v.begin(), v.end());
+    for (auto &i : v1) cin >> i;
 
-    cout << f(0, K, 2, 1, v) << endl;
+    int t1 = accumulate(v.begin(), v.end(), 0LL);
+    int t2 = accumulate(v1.begin(), v1.end(), 0LL);
+
+    set<int> s, s1;
+    for (auto i : v) s.insert(t1 - i);
+    for (auto i : v1) s1.insert(t2 - i);
+        debug(s); debug(s1);
+    while(q--){
+        int xx; cin>>xx;
+        bool ok=0;
+        debug(xx);
+
+        for(int j=1;j*j<=abs(xx);j++){
+            if(xx % j) continue;
+            int d1=j; int d2=xx/j;
+            int d3=-j; int d4=-xx/j;
+            debug(d1); debug(d2);
+            bool x1=s.find(d1)!=s.end() && s1.find(d2)!=s1.end();
+            bool x2=s.find(d3)!=s.end() && s1.find(d4)!=s1.end();
+            bool x3=s1.find(d1)!=s1.end() && s.find(d2)!=s.end();
+            bool x4=s1.find(d3)!=s1.end() && s.find(d4)!=s.end();          
+            if(x1 || x2 || x3 || x4) {yes; ok=1; break;}
+        }
+        if(!ok) {no; }
+    }
 }
 
 
@@ -110,7 +123,7 @@ int32_t main() {
     freopen("error1.txt", "w", stderr);
 #endif
     int test = 1;
-    cin >> test; 
+    //cin >> test; 
     rep(i, 1, test + 1) solve();
 
     return 0;

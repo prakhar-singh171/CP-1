@@ -41,7 +41,11 @@ const int mod = 998244353;
 const ll inf = LLONG_MAX;
 const ll ninf = LLONG_MIN;
 
-
+#ifndef ONLINE_JUDGE
+#define debug(x) cerr << #x <<" "; _print(x); cerr << endl;
+#else
+#define debug(x)
+#endif
 
 void _print(int t) {cerr << t;}
 void _print(string t) {cerr << t;}
@@ -389,6 +393,7 @@ void solve() {
     v[END] = 0;
     s.insert(END);
     s.insert(v1.back());
+    debug(s);
 
     obj.build(1, 1, NN, v); // Proper segment tree build
 
@@ -435,10 +440,15 @@ void solve() {
 }
 
 int32_t main() {
+#ifndef ONLINE_JUDGE
+    freopen("input1.txt", "r", stdin);
+    freopen("input2.txt", "w", stdout);
+    freopen("error1.txt", "w", stderr);
+#endif
 
     fast();
     int test = 1;
-   // cin >> test;
+    cin >> test;
     while (test--) solve();
 
     return 0;

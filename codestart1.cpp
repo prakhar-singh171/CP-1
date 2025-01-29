@@ -72,30 +72,25 @@ void fast() {
  
 
 
-int f(int i, long long power, int x2, int x3, const vector<int> &v) {
-    if (i == v.size()) 
-        return 0;
 
-    
-    if (v[i] < power) {
-        return 1 + f(i + 1, power + v[i] / 2, x2, x3, v);
-    }
-
-   
-    int t1 = x2 > 0 ? f(i, power * 2, x2 - 1, x3, v) : 0;
-    int t2 = x3 > 0 ? f(i, power * 3, x2, x3 - 1, v) : 0;
-    return max(t1, t2);
-}
 
 void solve() {
-    int N, K;
-    cin >> N >> K;
+    
+    int n; cin>>n;
+    vector<int> v(n);
+    for(auto &i:v) cin>>i;
+    vector<int> dp(n+2,0);
+    map<int,int> mp;
+    rev(i,n-1,0){
+        dp[i]=dp[i+1];
+        if(mp.find(v[i])!=mp.end()){
+            int t1=n-mp[v[i]];
+            dp[i]+=t1;
+        }
+        mp[v[i]]=i;
+    }
 
-    vector<int> v(N);
-    for (auto &i : v) cin >> i;
-    sort(v.begin(), v.end());
-
-    cout << f(0, K, 2, 1, v) << endl;
+    cout<<accumulate(all(dp),0LL)<<endl;
 }
 
 
@@ -110,7 +105,7 @@ int32_t main() {
     freopen("error1.txt", "w", stderr);
 #endif
     int test = 1;
-    cin >> test; 
+  //  cin >> test; 
     rep(i, 1, test + 1) solve();
 
     return 0;

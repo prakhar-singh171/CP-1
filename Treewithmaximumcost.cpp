@@ -72,31 +72,69 @@ void fast() {
  
 
 
-int f(int i, long long power, int x2, int x3, const vector<int> &v) {
-    if (i == v.size()) 
-        return 0;
+const int MAXN = 200005;
+vector<int> dp(MAXN, 0), dp1(MAXN, 0), price(MAXN, 0);
+int mx = INT_MIN;
 
-    
-    if (v[i] < power) {
-        return 1 + f(i + 1, power + v[i] / 2, x2, x3, v);
+void dfs(int v, int parent, vector<vector<int>> &adj) {
+    int t1 = 0;
+    for (auto j : adj[v]) {
+        if (j == parent) continue;
+        dfs(j, v, adj);
+        t1 += dp[j];
     }
+    dp[v] = t1 + price[v];
+}
 
-   
-    int t1 = x2 > 0 ? f(i, power * 2, x2 - 1, x3, v) : 0;
-    int t2 = x3 > 0 ? f(i, power * 3, x2, x3 - 1, v) : 0;
-    return max(t1, t2);
+int dfs1(int v, int parent, int depth, vector<vector<int>> &adj) {
+    int t1 = 0;
+    for (auto j : adj[v]) {
+        if (j == parent) continue;
+        t1 += dfs1(j, v, depth + 1, adj);
+    }
+    return dp1[v] = t1 + (depth * price[v]);
+}
+
+void dfs2(int v, int parent, int depth, int valp, int valp1, vector<vector<int>> &adj) {
+    for (auto j : adj[v]) {
+        if (j == parent) continue;
+        int x1 = dp[v] - dp[j]-price[v];
+        int x2 = dp1[v] - dp1[j]-(depth*dp1[v]);
+        dfs2(j, v, depth + 1, x1, x2, adj);
+    }
+    int tt1 = dp1[v] - (depth * dp[v]);
+    tt1 += (valp1 + valp);
+    mx = max(mx, tt1);
 }
 
 void solve() {
-    int N, K;
-    cin >> N >> K;
+    int n;
+    cin >> n;
 
-    vector<int> v(N);
-    for (auto &i : v) cin >> i;
-    sort(v.begin(), v.end());
+    // Input price of each node
+    for (int i = 0; i < n; i++) cin >> price[i];
 
-    cout << f(0, K, 2, 1, v) << endl;
+    // Input graph (undirected)
+    vector<vector<int>> adj(n);
+    for (int i = 0; i < n - 1; i++) {
+        int l, r;
+        cin >> l >> r;
+        --l; --r; // Convert to 0-based indexing
+        adj[l].push_back(r);
+        adj[r].push_back(l);
+    }
+
+    // Perform DFS traversals
+    dfs(0, -1, adj);
+    dfs1(0, -1, 0, adj);
+    dfs2(0, -1, 0, 0, 0, adj);
+
+     debug(dp1);
+
+    // Output the maximum result
+    cout << mx << endl;
 }
+
 
 
  
@@ -110,7 +148,7 @@ int32_t main() {
     freopen("error1.txt", "w", stderr);
 #endif
     int test = 1;
-    cin >> test; 
+    //cin >> test; 
     rep(i, 1, test + 1) solve();
 
     return 0;

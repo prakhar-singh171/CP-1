@@ -87,15 +87,10 @@ int f(int i, long long power, int x2, int x3, const vector<int> &v) {
     return max(t1, t2);
 }
 
+
+
 void solve() {
-    int N, K;
-    cin >> N >> K;
-
-    vector<int> v(N);
-    for (auto &i : v) cin >> i;
-    sort(v.begin(), v.end());
-
-    cout << f(0, K, 2, 1, v) << endl;
+        cout<<"fd"<<endl;
 }
 
 

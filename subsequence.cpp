@@ -87,15 +87,33 @@ int f(int i, long long power, int x2, int x3, const vector<int> &v) {
     return max(t1, t2);
 }
 
+
+
 void solve() {
-    int N, K;
-    cin >> N >> K;
 
-    vector<int> v(N);
-    for (auto &i : v) cin >> i;
-    sort(v.begin(), v.end());
+        int n; cin>>n;
+        vector<int> v(n);
+        int l,r; cin>>l>>r;
+        --l; --r;
+        for(auto &i:v) cin>>i;
+            multiset<int> ms,ms1;
+        int ans1,ans2;
+        rep(i,0,r+1){
+            ms.insert(v[i]);
+        }
 
-    cout << f(0, K, 2, 1, v) << endl;
+        rep(i,l,n) ms1.insert(v[i]);
+        ans1=0;
+        ans2=0;
+        int kk=r-l+1;
+        rep(i,1,kk+1){
+            ans1+=*ms.begin();
+            ans2+=*ms1.begin();
+            ms.erase(ms.find(*ms.begin()));
+            ms1.erase(ms1.find(*ms1.begin()));
+        }
+        cout<<min(ans1,ans2)<<endl;
+   
 }
 
 

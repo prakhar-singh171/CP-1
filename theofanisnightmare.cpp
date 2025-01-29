@@ -87,15 +87,24 @@ int f(int i, long long power, int x2, int x3, const vector<int> &v) {
     return max(t1, t2);
 }
 
+
+
 void solve() {
-    int N, K;
-    cin >> N >> K;
 
-    vector<int> v(N);
-    for (auto &i : v) cin >> i;
-    sort(v.begin(), v.end());
+      int n; cin>>n;
+      vector<int> v(n);
+      for(auto &i:v) cin>>i;
+    vi suff=v;
+rev(i,n-2,0) suff[i]+=suff[i+1];
+suff.push_back(suff.back());
+    int ans=0;
+    int k=1;
+    rep(i,0,n){
+        if(suff[i]>0 && suff[i+1]>0) {ans+=k*v[i]; k++;}
+        else {ans+=k*suff[i]; break;}
 
-    cout << f(0, K, 2, 1, v) << endl;
+    }
+    cout<<ans<<endl;
 }
 
 
